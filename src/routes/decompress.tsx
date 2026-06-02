@@ -88,7 +88,10 @@ function DecompressPage() {
           <div className="flex flex-wrap items-center gap-3">
             <Badge variant="secondary">Original length: {formatBytes(result.originalLength)}</Badge>
             <Badge variant="secondary">Symbols: {Object.keys(result.codes).length}</Badge>
-            <Button onClick={() => download(result.bytes as unknown as Uint8Array, fileName)}><Download className="mr-2 h-4 w-4" /> Download decoded</Button>
+            <Button onClick={() => {
+              const ab = result.bytes.buffer.slice(result.bytes.byteOffset, result.bytes.byteOffset + result.bytes.byteLength) as ArrayBuffer;
+              download(ab, fileName);
+            }}><Download className="mr-2 h-4 w-4" /> Download decoded</Button>
           </div>
 
           <Card>

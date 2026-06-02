@@ -46,7 +46,10 @@ function CompressPage() {
   const addFn = useServerFn(addHistory);
   const qc = useQueryClient();
   const persist = useMutation({
-    mutationFn: (vars: Parameters<typeof addFn>[0]["data"]) => addFn({ data: vars }),
+    mutationFn: (vars: {
+      file_name: string; original_size: number; compressed_size: number;
+      compression_ratio: number; space_saving_pct: number; original_hash: string; status: string;
+    }) => addFn({ data: vars }),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["history"] }),
   });
 
@@ -92,7 +95,9 @@ function CompressPage() {
 
   const downloadHuff = () => {
     if (!result) return;
-    downloadBlob(result.compressedBytes as unknown as Uint8Array, fileName.replace(/\.[^.]+$/, "") + ".huff");
+    const bytes = result.compressedBytes;
+    const ab = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength) as ArrayBuffer;
+    downloadBlob(ab, fileName.replace(/\.[^.]+$/, "") + ".huff");
   };
 
   const exportPdf = () => {
