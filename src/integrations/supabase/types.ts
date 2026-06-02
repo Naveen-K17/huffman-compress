@@ -14,7 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      compression_history: {
+        Row: {
+          compressed_size: number
+          compression_ratio: number
+          created_at: string
+          file_name: string
+          id: string
+          original_hash: string
+          original_size: number
+          space_saving_pct: number
+          status: string
+        }
+        Insert: {
+          compressed_size: number
+          compression_ratio: number
+          created_at?: string
+          file_name: string
+          id?: string
+          original_hash: string
+          original_size: number
+          space_saving_pct: number
+          status?: string
+        }
+        Update: {
+          compressed_size?: number
+          compression_ratio?: number
+          created_at?: string
+          file_name?: string
+          id?: string
+          original_hash?: string
+          original_size?: number
+          space_saving_pct?: number
+          status?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
